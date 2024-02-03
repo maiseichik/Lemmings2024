@@ -23,11 +23,25 @@ pygame.display.set_caption('Lemmings')
 # Создание игрового поля с препятствиями
 grid = [
     [1, 1, 1, 1, 1, 1, 1, 1],
-    [1, 0, 1, 1, 0, 0, 0, 1],
-    [1, 0, 0, 1, 1, 0, 0, 1],
-    [1, 0, 0, 0, 1, 1, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 1],
     [1, 1, 1, 1, 1, 1, 1, 1]
 ]
+
+# Позиция персонажа
+player_x = GRID_SIZE  # Начальная позиция по оси X
+player_y = GRID_SIZE  # Начальная позиция по оси Y
+
+# Размеры и цвет персонажа
+player_size = GRID_SIZE
+player_color = RED
+
+# Составные части персонажа (маленькие красные квадраты)
+player_parts = [(GRID_SIZE, GRID_SIZE)]
+
+# Флаг для отображения персонажа
+show_player = False
 
 # Основной игровой цикл
 running = True
@@ -35,6 +49,9 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE:  # При нажатии на пробел отобразить персонажа
+                show_player = True
 
     # Заполнение экрана белым цветом
     screen.fill(WHITE)
@@ -46,9 +63,15 @@ while running:
                 color = BLACK
                 pygame.draw.rect(screen, color, (col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE))
 
+    # Отображение персонажа
+    if show_player:
+        for part in player_parts:
+            part_x = player_x + part[0]
+            part_y = player_y + part[1]
+            pygame.draw.rect(screen, player_color, (part_x, part_y, GRID_SIZE // 2, GRID_SIZE // 2))
+
     # Обновление экрана
     pygame.display.flip()
 
 # Выход из игры
 pygame.quit()
-
